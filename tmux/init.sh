@@ -1,3 +1,3 @@
 #!/bin/sh
-
-cat tmux.conf > ~/.tmux/tmux.conf && tmux source-file ~/.tmux/tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+cat ./tmux.conf ~/.tmux/tmux.conf
