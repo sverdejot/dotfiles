@@ -1,0 +1,16 @@
+# Este es el archivo de configuración de Git por usuario.
+[user]
+# Por favor, adapta y descomenta las siguientes líneas:
+	name = sverdejot
+	email = sverdejot@gmail.com
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[core]
+	editor = nvim
+
+[alias]
+l = log --oneline --graph
+cam = commit --amend --no-edit 
+s = status 
