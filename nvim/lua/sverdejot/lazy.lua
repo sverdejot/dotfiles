@@ -13,7 +13,10 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
 	{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
 	{'nvim-telescope/telescope.nvim', tag = '0.1.5',
-		dependencies = { 'nvim-lua/plenary.nvim' }
+
+	dependencies = { 
+			'nvim-lua/plenary.nvim' 
+		}
 	},
 	{'nvim-neo-tree/neo-tree.nvim', branch = "v3.x",
 		dependencies = {
@@ -22,17 +25,12 @@ require('lazy').setup({
 			'MunifTanjim/nui.nvim',
 		}
 	},
+	{ 'codingpotions/codely-vim-theme' },
+	{ 'mbbill/undotree' },
+	{'sainnhe/gruvbox-material'},
 	{
-		'codingpotions/codely-vim-theme'	
-	},
-	{
-		'mbbill/undotree'
-	},
-	{
-		'sainnhe/gruvbox-material'
-	},
-	{
-		'williamboman/mason.nvim', opts = {
+		'williamboman/mason.nvim',
+		opts = {
 			ensure_installed = {
 				'gopls',
 			}
@@ -46,4 +44,21 @@ require('lazy').setup({
 	{'L3MON4D3/LuaSnip'},
 	{'echasnovski/mini.pairs'},
 	{'ellisonleao/gruvbox.nvim', config = true},
+	{
+  	"christoomey/vim-tmux-navigator",
+		cmd = {
+			"TmuxNavigateLeft",
+			"TmuxNavigateDown",
+			"TmuxNavigateUp",
+			"TmuxNavigateRight",
+			"TmuxNavigatePrevious",
+		},
+		keys = {
+			{ "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+			{ "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+			{ "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+			{ "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+			{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+		},
+	}
 })
