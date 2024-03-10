@@ -11,6 +11,7 @@ require('lspconfig').gopls.setup({})
 require('lspconfig').csharp_ls.setup({})
 require('lspconfig').marksman.setup({})
 require('lspconfig').pyright.setup({})
+require('lspconfig').tsserver.setup({})
 require('lspconfig').cucumber_language_server.setup({
 	cmd = { "cucumber-language-server", "--stdio" },
 	filetypes = { "cucumber", "feature" },
