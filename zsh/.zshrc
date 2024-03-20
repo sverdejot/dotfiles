@@ -3,20 +3,8 @@ export ZSH="$HOME/.oh-my-zsh"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
-# typewritten (prompt) config
-ZSH_THEME="spaceship"
-#fpath+=$HOME/.zsh/typewritten
+ZSH_THEME=""
 
-#export TYPEWRITTEN_COLOR_MAPPINGS="primary:blue"
-#export TYPEWRITTEN_PROMPT_LAYOUT="singleline"
-#export TYPEWRITTEN_COLORS="arrow:yellow;symbol:yellow"
-#export TYPEWRITTEN_LEFT_PROMPT_PREFIX_FUNCTION=(whoami)
-#export TYPEWRITTEN_ARROW_SYMBOL="->"
-
-#autoload -U promptinit; promptinit
-#prompt typewritten
-
-# plugins config
 plugins=(git tmux zsh-autosuggestions zsh-syntax-highlighting) 
 
 ZSH_TMUX_AUTOSTART=true
@@ -29,3 +17,4 @@ export NVM_DIR="$HOME/.nvm"
 
 # bun completions
 [ -s "/Users/sverdejot/.bun/_bun" ] && source "/Users/sverdejot/.bun/_bun"
+eval "$(starship init zsh)"
