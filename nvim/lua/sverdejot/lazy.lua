@@ -1,29 +1,40 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
-	{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
+	{
+		'nvim-treesitter/nvim-treesitter', 
+		run = ':TSUpdate',
+		build = ':TSUpdate',
+		 dependencies = {
+        {"nvim-treesitter/nvim-treesitter-textobjects"}, -- Syntax aware text-objects
+        {
+            "nvim-treesitter/nvim-treesitter-context", -- Show code context
+            opts = {enable = true, mode = "topline", line_numbers = true}
+        }
+    },
+	},
 	{'nvim-telescope/telescope.nvim', tag = '0.1.5',
 
 	dependencies = { 
-			'nvim-lua/plenary.nvim' 
-		}
-	},
-	{'nvim-neo-tree/neo-tree.nvim', branch = "v3.x",
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-tree/nvim-web-devicons',
-			'MunifTanjim/nui.nvim',
-		}
+		'nvim-lua/plenary.nvim' 
+	}
+},
+{'nvim-neo-tree/neo-tree.nvim', branch = "v3.x",
+dependencies = {
+	'nvim-lua/plenary.nvim',
+	'nvim-tree/nvim-web-devicons',
+	'MunifTanjim/nui.nvim',
+}
 	},
 	{ 'codingpotions/codely-vim-theme' },
 	{ 'mbbill/undotree' },
@@ -45,7 +56,7 @@ require('lazy').setup({
 	{'echasnovski/mini.pairs'},
 	{'ellisonleao/gruvbox.nvim', config = true},
 	{
-  	"christoomey/vim-tmux-navigator",
+		"christoomey/vim-tmux-navigator",
 		cmd = {
 			"TmuxNavigateLeft",
 			"TmuxNavigateDown",
@@ -79,4 +90,104 @@ require('lazy').setup({
 			require('alpha').setup(require('alpha.themes.dashboard').config)
 		end
 	},
+	{
+		"romgrk/barbar.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons", -- patched fonts support 
+			"lewis6991/gitsigns.nvim" -- display git status
+		},
+		init = function() vim.g.barbar_auto_setup = false end,
+		config = function()
+			local barbar = require("barbar")
+
+			barbar.setup({
+				clickable = true, -- Enables/disables clickable tabs
+				tabpages = false, -- Enable/disables current/total tabpages indicator (top right corner)
+				insert_at_end = true,
+				icons = {
+					button = "",
+					buffer_index = true,
+					filetype = {enabled = true},
+					visible = {modified = {buffer_number = false}},
+					gitsigns = {
+						added = {enabled = true, icon = "+"},
+						changed = {enabled = true, icon = "~"},
+						deleted = {enabled = true, icon = "-"}
+					}
+				}
+			})
+
+			-- key maps
+
+			local map = vim.api.nvim_set_keymap
+			local opts = {noremap = true, silent = true}
+
+			-- Move to previous/next
+			map("n", "<A-,>", "<Cmd>BufferPrevious<CR>", opts)
+			map("n", "<A-.>", "<Cmd>BufferNext<CR>", opts)
+			-- Re-order to previous/next
+			map("n", "<A-<>", "<Cmd>BufferMovePrevious<CR>", opts)
+			map("n", "<A->>", "<Cmd>BufferMoveNext<CR>", opts)
+			-- Goto buffer in position...
+			map("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", opts)
+			map("n", "<A-2>", "<Cmd>BufferGoto 2<CR>", opts)
+			map("n", "<A-3>", "<Cmd>BufferGoto 3<CR>", opts)
+			map("n", "<A-4>", "<Cmd>BufferGoto 4<CR>", opts)
+			map("n", "<A-5>", "<Cmd>BufferGoto 5<CR>", opts)
+			map("n", "<A-6>", "<Cmd>BufferGoto 6<CR>", opts)
+			map("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", opts)
+			map("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", opts)
+			map("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", opts)
+			map("n", "<A-0>", "<Cmd>BufferLast<CR>", opts)
+			-- Pin/unpin buffer
+			map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts)
+			-- Close buffer
+			map("n", "<A-c>", "<Cmd>BufferClose<CR>", opts)
+			map("n", "<A-b>", "<Cmd>BufferCloseAllButCurrent<CR>", opts)
+		end
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp", -- cmp_nvim_lsp
+			"neovim/nvim-lspconfig", -- lspconfig
+			"onsails/lspkind-nvim", -- lspkind (VS pictograms)
+			{
+				"L3MON4D3/LuaSnip",
+				version = "v2.*",
+				build = "make install_jsregexp",
+				dependencies = {"rafamadriz/friendly-snippets"}, -- Snippets
+				config = function()
+					require("luasnip.loaders.from_vscode").lazy_load()
+					-- https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/go.json
+				end
+			}, {"saadparwaiz1/cmp_luasnip", enabled = true}
+		},
+		config = function()
+			local luasnip = require("luasnip")
+			local types = require("luasnip.util.types")
+
+			-- Display virtual text to indicate snippet has more nodes
+			luasnip.config.setup({
+				ext_opts = {
+					[types.choiceNode] = {
+						active = {virt_text = {{"⇥", "GruvboxRed"}}}
+					},
+					[types.insertNode] = {
+						active = {virt_text = {{"⇥", "GruvboxBlue"}}}
+					}
+				}
+			})
+		end
+	},
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
 })

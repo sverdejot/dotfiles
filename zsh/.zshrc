@@ -1,7 +1,7 @@
 # export paths
 export ZSH="$HOME/.oh-my-zsh"
 export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$GOPATH/bin:$HOME/.cargo/env"
 
 ZSH_THEME=""
 
@@ -18,3 +18,5 @@ export NVM_DIR="$HOME/.nvm"
 # bun completions
 [ -s "/Users/sverdejot/.bun/_bun" ] && source "/Users/sverdejot/.bun/_bun"
 eval "$(starship init zsh)"
+
+eval "$(atuin init zsh)"
