@@ -1,0 +1,20 @@
+theme = Gruvbox Dark
+
+background-opacity = 0.95
+
+scrollbar = system
+
+font-family = JetBrainsMono Nerd Font
+font-style = Bold
+font-size = 13
+
+# Ctrl+1..9 -> tmux prefix (C-Space = \x00) + N : jump to tmux window N
+keybind = ctrl+one=text:\x001
+keybind = ctrl+two=text:\x002
+keybind = ctrl+three=text:\x003
+keybind = ctrl+four=text:\x004
+keybind = ctrl+five=text:\x005
+keybind = ctrl+six=text:\x006
+keybind = ctrl+seven=text:\x007
+keybind = ctrl+eight=text:\x008
+keybind = ctrl+nine=text:\x009

@@ -1,0 +1,58 @@
+# ---------- tmux autostart (skip inside tmux, IDE terminals and non-interactive shells) ----------
+if [[ -o interactive && -z "$TMUX" && -z "$INSIDE_EMACS" && "$TERM_PROGRAM" != (vscode|zed|WarpTerminal) && -z "$CLAUDECODE" ]] && command -v tmux >/dev/null; then
+  if tmux has-session 2>/dev/null; then exec tmux attach; else exec tmux new-session -s main; fi
+fi
+
+# ---------- nix ----------
+[[ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]] && . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+# ---------- env ----------
+export EDITOR=nvim VISUAL=nvim
+export GOPATH="$HOME/go"
+export SOPS_AGE_KEY_FILE="$HOME/.sops/key"
+export K9S_EDITOR=nvim
+export KUBECONFIG="$HOME/.kube/k3s.yaml"
+typeset -U path fpath
+path=("$HOME/.local/bin" $path "$GOPATH/bin")
+fpath=("$HOME/.config/zsh/completions" $fpath)
+
+# Secrets: read from macOS Keychain, never inline here.
+# Store once with: security add-generic-password -U -a "$USER" -s geemail-api-credentials -w "$(jq -c . creds.json)"
+export GEEMAIL_API_CREDENTIALS="$(security find-generic-password -s geemail-api-credentials -w 2>/dev/null)"
+
+# ---------- history ----------
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt extended_history hist_ignore_all_dups hist_ignore_space hist_reduce_blanks share_history
+setopt auto_cd interactive_comments
+
+# ---------- plugins (antidote) ----------
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+antidote load "$HOME/.config/zsh/plugins.txt" "$HOME/.cache/zsh_plugins.zsh"
+
+# ---------- completion (compinit once, cached dump) ----------
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then compinit; else compinit -C; fi
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+[[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+
+# ---------- tools ----------
+eval "$(mise activate zsh)"
+source <(fzf --zsh)
+eval "$(zoxide init zsh --cmd cd)"
+eval "$(atuin init zsh)"          # after fzf so atuin owns Ctrl-R / Up
+eval "$(starship init zsh)"
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
+
+# ---------- aliases ----------
+alias k=kubectl
+alias v=nvim
+alias lg=lazygit
+alias ls='ls --color=auto'
+alias ll='ls -lah'

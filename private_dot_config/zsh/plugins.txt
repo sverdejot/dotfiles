@@ -1,0 +1,7 @@
+# Load with antidote (static bundle regenerated automatically when this file changes)
+getantidote/use-omz
+ohmyzsh/ohmyzsh path:lib
+ohmyzsh/ohmyzsh path:plugins/git
+zsh-users/zsh-completions path:src kind:fpath
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting

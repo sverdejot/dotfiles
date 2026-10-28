@@ -1,0 +1,51 @@
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - h : yabai -m window --focus west
+alt - l : yabai -m window --focus east
+alt - s: yabai -m display --focus west
+alt - g: yabai -m display --focus east
+shift + alt - r : yabai -m space --rotate 270
+shift + alt - y : yabai -m space --mirror y-axis
+shift + alt - x : yabai -m space --mirror x-axis
+shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
+shift + alt - m : yabai -m window --toggle zoom-fullscreen
+shift + alt - e : yabai -m space --balance
+shift + alt - j : yabai -m window --swap south
+shift + alt - k : yabai -m window --swap north
+shift + alt - h : yabai -m window --swap west
+shift + alt - l : yabai -m window --swap east
+shift + alt - s : yabai -m window --display west; yabai -m display --focus west;
+shift + alt - g : yabai -m window --display east; yabai -m display --focus east;
+
+lctrl + alt - h : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+lctrl + alt - j : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+lctrl + alt - k : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-50
+lctrl + alt - l : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
+
+# ---------- extra ----------
+# previous window
+alt - tab : yabai -m window --focus recent
+# zoom to parent node (half screen)
+alt - f : yabai -m window --toggle zoom-parent
+# rotate split of current node (side by side <-> top/bottom)
+shift + alt - v : yabai -m window --toggle split
+# warp: re-insert window in another part of the tree
+ctrl + shift + alt - h : yabai -m window --warp west
+ctrl + shift + alt - j : yabai -m window --warp south
+ctrl + shift + alt - k : yabai -m window --warp north
+ctrl + shift + alt - l : yabai -m window --warp east
+# toggle layout bsp <-> stack
+shift + alt - space : yabai -m query --spaces --space | grep -q '"type":"bsp"' && yabai -m space --layout stack || yabai -m space --layout bsp
+# navigate stacked windows
+alt - n : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+alt - p : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+# toggle padding and gaps
+shift + alt - p : yabai -m space --toggle padding; yabai -m space --toggle gap
+# open / focus Ghostty
+alt - return : open -a Ghostty
+# restart yabai
+ctrl + alt - r : yabai --restart-service
