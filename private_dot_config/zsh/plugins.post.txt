@@ -1,0 +1,4 @@
+# Loaded AFTER compinit. fzf-tab must come before widget-wrapping plugins.
+Aloxaf/fzf-tab
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting

@@ -36,8 +36,20 @@ antidote load "$HOME/.config/zsh/plugins.txt" "$HOME/.cache/zsh_plugins.zsh"
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then compinit; else compinit -C; fi
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' menu select
+zstyle ':completion:*' menu no                      # fzf-tab replaces the menu
+zstyle ':completion:*:descriptions' format '[%d]'   # lets fzf-tab group results
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+
+# fzf-tab + autosuggestions + syntax highlighting (need compinit first)
+antidote load "$HOME/.config/zsh/plugins.post.txt" "$HOME/.cache/zsh_plugins.post.zsh"
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup      # show in a tmux popup
+zstyle ':fzf-tab:*' popup-min-size 80 12
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:(nvim|v|bat|cat):*' fzf-preview '[[ -f $realpath ]] && head -100 $realpath || ls -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff --color=always $word | delta'
+zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps -o pid,%cpu,%mem,command -p $word'
 
 # ---------- tools ----------
 eval "$(mise activate zsh)"
