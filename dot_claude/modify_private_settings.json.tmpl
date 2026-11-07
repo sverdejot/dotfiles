@@ -1,0 +1,12 @@
+#!/bin/sh
+# Merge tracked base settings into the local ~/.claude/settings.json.
+# Local-only keys (e.g. autoMode, which holds machine/homelab details) are kept
+# and never committed. Edit .claude-settings.base.json to change tracked keys.
+base="{{ .chezmoi.sourceDir }}/.claude-settings.base.json"
+current="$(cat)"
+[ -n "$current" ] || current='{}'
+if command -v jq >/dev/null 2>&1; then
+  printf '%s' "$current" | jq --slurpfile base "$base" '. * $base[0]'
+else
+  cat "$base"
+fi

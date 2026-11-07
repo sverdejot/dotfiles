@@ -1,5 +1,4 @@
 {
-  "includeCoAuthoredBy": false,
   "permissions": {
     "defaultMode": "auto"
   },
@@ -71,5 +70,9 @@
   },
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
 }
