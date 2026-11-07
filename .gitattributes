@@ -1,0 +1,2 @@
+# Third-party caveman hooks: exclude from GitHub language stats
+claude/hooks/*.js linguist-vendored
