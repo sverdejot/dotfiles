@@ -1,0 +1,6 @@
+.DS_Store
+*.bak.*
+# runtime data that lands inside linked folders
+tmux/plugins/
+nvim/.claude/
+mise/mise.lock

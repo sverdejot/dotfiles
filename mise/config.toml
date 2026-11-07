@@ -38,7 +38,6 @@ fzf = "latest"
 zoxide = "latest"
 delta = "latest"
 tree-sitter = "latest"
-chezmoi = "latest"
 
 [settings]
 experimental = true

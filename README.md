@@ -1,26 +1,39 @@
-# sverdejot dotfiles
+# dotfiles
 
-Managed with [chezmoi](https://chezmoi.io).
+macOS setup: zsh (antidote), git, neovim, tmux, ghostty, yabai + skhd, mise, atuin, starship and Claude Code.
 
-## New machine
+## Install
 
 ```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply sverdejot
+git clone git@github.com:sverdejot/dotfiles.git ~/repos/personal/dotfiles
+~/repos/personal/dotfiles/install.sh
 ```
 
-This installs Homebrew, the `Brewfile`, mise tools, tmux plugins and applies macOS defaults.
+Installs Homebrew + `Brewfile`, symlinks every folder to its place, installs mise tools and tmux plugins, merges Claude settings and applies macOS defaults.
+Existing files are moved to `*.bak.<timestamp>`, never deleted.
 
-## Daily use
+## Layout
 
-| Task | Command |
+Each folder is linked as-is, so editing `~/.config/nvim` edits this repo.
+
+| Repo | Linked to |
 |---|---|
-| edit a file | `chezmoi edit ~/.zshrc` (or edit in place, then `chezmoi re-add`) |
-| see pending changes | `chezmoi diff` |
-| apply repo -> home | `chezmoi apply` |
-| pull + apply | `chezmoi update` |
-| go to repo | `chezmoi cd` |
+| `zsh/zshrc`, `zsh/zshenv` | `~/.zshrc`, `~/.zshenv` |
+| `zsh/`, `git/`, `nvim/`, `tmux/`, `ghostty/`, `yabai/`, `skhd/`, `mise/` | `~/.config/<name>` |
+| `atuin/config.toml`, `starship.toml` | `~/.config/...` |
+| `claude/` | `~/.claude/` (CLAUDE.md, RTK.md, hooks, commands, skills) |
+| `Brewfile` | apps and system tools (dev CLIs live in `mise/config.toml`) |
+
+## Claude settings
+
+`~/.claude/settings.json` is **not** linked: Claude Code writes machine-specific data to it (`autoMode`).
+The repo keeps `claude/settings.base.json` instead.
+
+```sh
+./install.sh claude-save   # local settings -> repo (drops local-only keys)
+./install.sh claude        # repo -> local settings (merge)
+```
 
 ## Secrets
 
-Never commit secrets. They are read at runtime from the macOS Keychain
-(see `GEEMAIL_API_CREDENTIALS` in `.zshrc`).
+Never committed. Read at runtime from the macOS Keychain (see `zsh/zshrc`).
